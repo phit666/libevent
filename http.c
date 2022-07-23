@@ -2833,9 +2833,6 @@ evhttp_connection_connect_(struct evhttp_connection *evcon)
 	    evcon);
 	bufferevent_set_timeouts(evcon->bufev,
 	    &evcon->timeout_connect, &evcon->timeout_connect);
-	/* make sure that we get a write callback */
-	if (bufferevent_enable(evcon->bufev, EV_WRITE))
-		return (-1);
 
 	evcon->state = EVCON_CONNECTING;
 
@@ -2860,6 +2857,11 @@ evhttp_connection_connect_(struct evhttp_connection *evcon)
 		ret = bufferevent_socket_connect_hostname(evcon->bufev,
 				evcon->dns_base, evcon->ai_family, address, evcon->port);
 	}
+
+	/* make sure that we get a write callback */
+	if (bufferevent_enable(evcon->bufev, EV_WRITE))
+		return (-1);
+
 
 	if (ret < 0) {
 		evcon->state = old_state;
