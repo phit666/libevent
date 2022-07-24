@@ -123,11 +123,11 @@ static const struct eventop *eventops[] = {
 #ifdef EVENT__HAVE_SELECT
 	&selectops,
 #endif
-#ifdef _WIN32
-	&win32ops,
-#endif
 #ifdef EVENT__HAVE_WEPOLL
 	&wepollops,
+#endif
+#ifdef _WIN32
+	&win32ops,
 #endif
 	NULL
 };
